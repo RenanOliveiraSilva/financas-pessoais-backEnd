@@ -81,13 +81,15 @@ public class LancamentoResource {
 			@RequestParam(value = "tipo", required = false) TipoLancamento tipo,
 			@RequestParam("usuario") Long idUsuario
 			) {
+		Optional<Usuario> usuario = usuarioService.obterPorId(idUsuario);
+		
 		Lancamento lancamentoFiltro = new Lancamento();
 		lancamentoFiltro.setDescricao(descricao);
 		lancamentoFiltro.setMes(mes);
 		lancamentoFiltro.setAno(ano);
 		lancamentoFiltro.setTipo(tipo);
+		lancamentoFiltro.setUsuario(usuario.get());
 		
-		Optional<Usuario> usuario = usuarioService.obterPorId(idUsuario);
 		
 		if(!usuario.isPresent()) {
 			return ResponseEntity.badRequest().body("Não foi possível realizar a consulta. Usuário não encontrado para o ID informado");
